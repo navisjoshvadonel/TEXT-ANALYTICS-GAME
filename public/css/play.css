@@ -173,3 +173,120 @@ main{max-width:760px;margin:0 auto;padding:16px 16px 40px}
 .pin-card.no{animation:shake .4s}
 .pin-card .btn-xl{margin-top:16px}
 .pin-badge{display:inline-flex;gap:6px;align-items:center;background:#e3f4ee;color:#26705a;font-weight:800;font-size:12px;letter-spacing:1px;border-radius:999px;padding:4px 10px;font-family:var(--display)}
+
+/* Mode selection card (landing screen) */
+.mode-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 34px 26px;
+  text-align: center;
+}
+.mode-card h1 {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.mode-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 22px 0 16px;
+}
+.mode-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 2px solid var(--line);
+  background: #fff;
+  text-align: left;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 4px 0 #dedad0, 0 8px 18px #00000008;
+  transition: all .18s ease;
+  cursor: pointer;
+  width: 100%;
+}
+.mode-card-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 #dedad0, 0 12px 24px #00000010;
+  border-color: var(--blue);
+}
+.mode-card-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #dedad0;
+}
+.solo-card-btn .mcb-icon {
+  background: #e3f4ee;
+  color: #174a3a;
+  box-shadow: 0 3px 0 #bde2d4;
+}
+.multi-card-btn .mcb-icon {
+  background: #eef1fb;
+  color: #244199;
+  box-shadow: 0 3px 0 #d8e0f6;
+}
+.mcb-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.mcb-body {
+  flex: 1;
+  min-width: 0;
+}
+.mcb-body b {
+  display: block;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.mcb-body span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.mcb-tag {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #f1eee6;
+  color: var(--muted);
+  flex: none;
+}
+.solo-card-btn:hover .mcb-tag {
+  background: var(--mint);
+  color: #174a3a;
+}
+.multi-card-btn:hover .mcb-tag {
+  background: #eef1fb;
+  color: var(--blue-d);
+}
+.host-link-box {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+.host-link-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .15s;
+}
+.host-link-text:hover {
+  color: var(--blue-d);
+  text-decoration: underline;
+}

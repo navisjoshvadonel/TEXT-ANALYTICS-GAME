@@ -896,3 +896,12 @@ addEventListener('keydown', e => {
     }
   }
 });
+
+// Auto-activate solo mode if opened via #solo or ?mode=solo
+if (location.hash === '#solo' || new URLSearchParams(location.search).get('mode') === 'solo') {
+  setMode('solo');
+}
+window.addEventListener('hashchange', () => {
+  if (location.hash === '#solo') setMode('solo');
+  else if (location.hash === '#multi') setMode('multi');
+});

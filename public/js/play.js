@@ -11,7 +11,7 @@ $('#mute').onclick = () => Sound.toggle($('#mute'));
 
 function show(id) {
   for (const v of document.querySelectorAll('.view')) v.classList.toggle('hidden', v.id !== id);
-  $('#hud').classList.toggle('hidden', id === 'v-join' || id === 'v-pin');
+  $('#hud').classList.toggle('hidden', id === 'v-join' || id === 'v-pin' || id === 'v-mode');
 }
 
 // ---------- connection ----------
@@ -31,7 +31,7 @@ socket.on('pinChanged', () => { if (!joined) { setPin(''); startJoin(); } });
 // ---------- game PIN ----------
 let gamePin = sessionStorage.getItem('att-gpin') || '';
 function setPin(p) { gamePin = p; p ? sessionStorage.setItem('att-gpin', p) : sessionStorage.removeItem('att-gpin'); }
-function startJoin() { show(gamePin ? 'v-join' : 'v-pin'); if (!gamePin) setTimeout(() => $('#pinInput').focus(), 50); }
+function startJoin() { if (gamePin) { show('v-join'); } else { show('v-mode'); } }
 $('#pinInput').oninput = e => { e.target.value = e.target.value.replace(/D/g, '').slice(0, 6); };
 $('#pinForm').onsubmit = e => {
   e.preventDefault(); Sound.click();
@@ -325,3 +325,14 @@ setInterval(() => {
   t.classList.toggle('hidden', ms === null);
   if (ms !== null) { t.textContent = (v.paused ? '⏸ ' : '⏱ ') + fmt(ms); t.classList.toggle('low', ms < 60000); }
 }, 250);
+
+// Mode select on landing
+$('#chooseMulti')?.addEventListener('click', () => {
+  Sound.click();
+  show('v-pin');
+  setTimeout(() => $('#pinInput')?.focus(), 80);
+});
+$('#btnBackToMode')?.addEventListener('click', () => {
+  Sound.click();
+  show('v-mode');
+});

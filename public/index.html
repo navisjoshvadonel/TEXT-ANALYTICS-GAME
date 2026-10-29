@@ -21,8 +21,41 @@
 </header>
 
 <main id="app">
+    <!-- MODE SELECT (INITIAL LANDING SCREEN) -->
+  <section id="v-mode" class="view center">
+    <div class="card mode-card">
+      <div class="pin-logo" aria-hidden="true"><span>🎮</span><span>🧩</span><span>⚔️</span></div>
+      <h1>ANALYSIS THE TEXTS</h1>
+      <p class="muted">Interactive NLP Learning Arena · Choose your mode</p>
+
+      <div class="mode-options-grid">
+        <a href="/host#solo" class="mode-card-btn solo-card-btn" id="chooseSolo">
+          <div class="mcb-icon">🎮</div>
+          <div class="mcb-body">
+            <b>Single Player Mode</b>
+            <span>Play solo at your own pace · No time limit · No PIN needed</span>
+          </div>
+          <div class="mcb-tag">SOLO PLAY</div>
+        </a>
+
+        <button type="button" class="mode-card-btn multi-card-btn" id="chooseMulti">
+          <div class="mcb-icon">👥</div>
+          <div class="mcb-body">
+            <b>Multiplayer Arena</b>
+            <span>Enter game PIN to join your department arena</span>
+          </div>
+          <div class="mcb-tag">LIVE BATTLE</div>
+        </button>
+      </div>
+
+      <div class="host-link-box">
+        <a href="/host" class="host-link-text">🖥️ Open Host & Projector Arena →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- GAME PIN -->
-  <section id="v-pin" class="view center">
+  <section id="v-pin" class="view center hidden">
     <form class="card pin-card" id="pinForm" autocomplete="off">
       <div class="pin-logo" aria-hidden="true"><span>📜</span><span>🔍</span><span>🧠</span></div>
       <h1>ANALYSIS THE TEXTS</h1>
@@ -30,6 +63,7 @@
       <input id="pinInput" class="pin-input" inputmode="numeric" maxlength="7" placeholder="Game PIN" aria-label="Game PIN" required>
       <button class="btn btn-xl wide" type="submit">ENTER ▶</button>
       <p id="pinErr" class="err" role="alert"></p>
+      <button type="button" class="btn ghost sm" id="btnBackToMode" style="margin-top:14px">← Back to Mode Select</button>
     </form>
   </section>
 
