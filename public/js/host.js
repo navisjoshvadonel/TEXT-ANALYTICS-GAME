@@ -25,8 +25,13 @@ function showPin(p) {
 }
 
 fetch('/api/info').then(r => r.json()).then(i => {
-  $('#url').textContent = i.url;
-  if (i.ips.length > 1) $('#urlAlt').textContent = 'or ' + i.ips.slice(1).join(' · ');
+  const currentOrigin = (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') ? location.origin : i.url;
+  $('#url').textContent = currentOrigin;
+  if (!i.isPublic && i.ips?.length > 1 && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    $('#urlAlt').textContent = 'or ' + i.ips.slice(1).join(' · ');
+  } else {
+    $('#urlAlt').textContent = '';
+  }
 });
 
 // ---------- render ----------

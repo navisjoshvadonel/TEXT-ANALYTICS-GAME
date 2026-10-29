@@ -398,9 +398,19 @@ io.on('connection', socket => {
 app.use(express.static(path.join(__dirname, 'public')));
 app.get(['/host', '/projector', '/projector.html', '/host.html', '/arena'], (req, res) => res.sendFile(path.join(__dirname, 'public', 'host.html')));
 app.get('/api/info', (req, res) => {
+  const hostHeader = req.headers['x-forwarded-host'] || req.headers.host;
+  const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+  const isPublic = process.env.PUBLIC_URL || (hostHeader && !hostHeader.includes('localhost') && !hostHeader.includes('127.0.0.1'));
+  const publicUrl = process.env.PUBLIC_URL || (isPublic ? `${proto}://${hostHeader}` : null);
   const ips = lanAddresses();
-  res.json({ url: `http://${ips[0] || 'localhost'}:${PORT}`, ips: ips.map(ip => `${ip}:${PORT}`) });
+  const defaultUrl = publicUrl || `http://${ips[0] || 'localhost'}:${PORT}`;
+  res.json({
+    url: defaultUrl,
+    ips: publicUrl ? [] : ips.map(ip => `${ip}:${PORT}`),
+    isPublic: !!publicUrl
+  });
 });
+
 app.get('/api/solo-data', (req, res) => {
   res.json({
     units: UNITS,
