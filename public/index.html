@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F8F7F4">
+<title>Analysis The Texts</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/play.css">
+</head>
+<body class="game-bg">
+<header class="top">
+  <div class="brand"><div class="logo">AT</div><div class="brand-txt">ANALYSIS THE TEXTS<small id="roundLabel">ARENA</small></div></div>
+  <div class="hud hidden" id="hud">
+    <div class="hud-chip" title="Your score"><span class="coin" aria-hidden="true">★</span><b id="hudScore">0</b></div>
+    <div class="hud-chip streak hidden" id="hudStreak" title="Correct answers in a row">🔥<b id="hudStreakN">0</b></div>
+    <div class="hud-chip rank" id="hudRank" title="Your rank">#–</div>
+    <span id="timer" class="hud-chip timer hidden"></span>
+  </div>
+  <button id="mute" class="icon-btn" aria-label="Mute">🔊</button>
+  <div class="gain-pop hidden" id="gainPop"></div>
+</header>
+
+<main id="app">
+  <!-- GAME PIN -->
+  <section id="v-pin" class="view center">
+    <form class="card pin-card" id="pinForm" autocomplete="off">
+      <div class="pin-logo" aria-hidden="true"><span>📜</span><span>🔍</span><span>🧠</span></div>
+      <h1>ANALYSIS THE TEXTS</h1>
+      <p class="muted">Enter the game PIN shown on the projector</p>
+      <input id="pinInput" class="pin-input" inputmode="numeric" maxlength="7" placeholder="Game PIN" aria-label="Game PIN" required>
+      <button class="btn btn-xl wide" type="submit">ENTER ▶</button>
+      <p id="pinErr" class="err" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- JOIN -->
+  <section id="v-join" class="view hidden">
+    <div class="join-wrap">
+      <div class="player-card" id="pc">
+        <div class="pc-ava" id="pcAva">?</div>
+        <div class="pc-info">
+          <span class="pc-tag">PLAYER CARD</span>
+          <b id="pcName">Your name</b>
+          <span id="pcArena" class="pc-arena">Choose an arena</span>
+        </div>
+      </div>
+
+      <form id="joinForm" autocomplete="off" class="card join">
+        <div class="step"><span class="step-n">1</span><h2>Who's playing?</h2></div>
+        <input id="jName" class="field big" maxlength="20" placeholder="Type your name" aria-label="Your name" required>
+
+        <div class="step"><span class="step-n">2</span><h2>Choose your arena</h2></div>
+        <div class="arena-grid" id="arenaGrid" role="radiogroup" aria-label="Department arena"></div>
+
+        <div class="step" id="secStep"><span class="step-n">3</span><h2>Your section</h2></div>
+        <div class="sec-row" id="secRow" role="radiogroup" aria-label="Section"></div>
+
+        <button class="btn btn-xl wide" type="submit" id="enterBtn" disabled>ENTER THE ARENA ⚔</button>
+        <p id="jErr" class="err" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="v-lobby" class="view center hidden">
+    <div class="card lobby">
+      <div class="arena-banner" id="lArena"></div>
+      <div class="me-row" id="lMe"></div>
+      <p class="lobby-wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span> Waiting for the host to start <b>Round 1</b></p>
+      <div class="mates">
+        <p class="eyebrow" id="lMatesTitle">IN YOUR ARENA</p>
+        <div class="mates-list" id="lMates"></div>
+      </div>
+      <div class="howto">
+        <div><b>Round 1</b><span>Picture Connect · 15 pictures · guess the NLP term</span></div>
+        <div><b>Round 2</b><span>Hangman · 25 words · solo, score carries over</span></div>
+      </div>
+      <button class="link" id="leave">Wrong details? Change</button>
+    </div>
+  </section>
+
+  <!-- ROUND 1 -->
+  <section id="v-r1" class="view hidden">
+    <div class="stage-map" id="r1Map" aria-hidden="true"></div>
+    <div class="q-head">
+      <span class="pill" id="r1Unit"></span><span class="pill yellow" id="r1Tag"></span>
+      <span class="q-count" id="r1Count"></span>
+    </div>
+    <h2 class="q-title">What connects these pictures?</h2>
+    <div class="pics" id="r1Pics"></div>
+    <div class="slots" id="r1Slots" aria-live="polite"></div>
+    <p class="hint-text hidden" id="r1Hint"></p>
+    <div class="tries" id="r1Att"></div>
+    <div class="kbd" id="r1Kbd"></div>
+    <div class="actions">
+      <button class="btn yellow" id="r1HintBtn">💡 Hint <small>(100→60)</small></button>
+      <button class="btn ghost" id="r1Skip">Skip ⏭</button>
+      <button class="btn mint btn-go" id="r1Submit">SUBMIT ✓</button>
+    </div>
+  </section>
+
+  <!-- ROUND 2 -->
+  <section id="v-r2" class="view hidden">
+    <div class="stage-map" id="r2Map" aria-hidden="true"></div>
+    <div class="q-head">
+      <span class="pill" id="r2Unit"></span><span class="pill gray" id="r2Diff"></span>
+      <span class="q-count" id="r2Count"></span>
+    </div>
+    <div class="hm-wrap">
+      <svg id="hang" viewBox="0 0 220 200" class="hang" role="img" aria-label="Hangman drawing">
+        <path class="hp p1" pathLength="1" d="M20 186 H200"/>
+        <path class="hp p2" pathLength="1" d="M60 186 V24"/>
+        <path class="hp p3" pathLength="1" d="M52 24 H150 M60 54 L90 24 M150 24 V48"/>
+        <g class="hpart p4"><circle cx="150" cy="68" r="20" class="head"/><circle cx="143" cy="66" r="2.6" class="eye"/><circle cx="157" cy="66" r="2.6" class="eye"/><path class="mouth" d="M143 76 Q150 81 157 76"/><circle cx="138" cy="73" r="3" class="blush"/><circle cx="162" cy="73" r="3" class="blush"/></g>
+        <path class="hp p5" pathLength="1" d="M150 88 V134 M150 100 L128 120 M150 100 L172 120"/>
+        <path class="hp p6" pathLength="1" d="M150 134 L134 164 M150 134 L166 164"/>
+      </svg>
+      <div class="hm-side">
+        <p class="clue-label">CLUE</p>
+        <p class="clue" id="r2Clue"></p>
+        <div class="lives" id="r2Lives" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="word" id="r2Word" aria-live="polite"></div>
+    <div class="kbd" id="r2Kbd"></div>
+    <div class="actions" id="r2Actions">
+      <button class="btn yellow" id="r2HintBtn">💡 Reveal a letter <small>(−20)</small></button>
+      <button class="btn ghost" id="r2Skip">Skip ⏭</button>
+    </div>
+    <div class="actions hidden" id="r2NextWrap">
+      <button class="btn mint btn-go" id="r2Next">NEXT WORD →</button>
+    </div>
+  </section>
+
+  <!-- RESULT (round finished / between rounds / final) -->
+  <section id="v-result" class="view center hidden">
+    <div class="card result">
+      <div class="res-medal" id="resMedal">🎉</div>
+      <h2 id="resTitle"></h2>
+      <p class="muted" id="resSub"></p>
+      <div class="res-rank" id="resRank"></div>
+      <div class="score-row" id="resScores"></div>
+      <p class="lobby-wait" id="resWait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span> Watch the projector</p>
+    </div>
+  </section>
+</main>
+
+<div id="splash" class="splash hidden" aria-live="assertive"></div>
+<div id="paused" class="overlay hidden"><div class="card overlay-card"><div class="big-emoji">⏸️</div><h2>Paused</h2><p class="muted">The host paused the game. Hang tight!</p></div></div>
+<div id="fb" class="feedback hidden" aria-live="assertive"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/common.js"></script>
+<script src="js/play.js"></script>
+</body>
+</html>

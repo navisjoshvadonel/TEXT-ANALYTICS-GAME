@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NLP QUEST · Team Play</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/play.css">
+</head>
+<body>
+<!-- Global Navigation Header -->
+<header class="top-nav">
+  <div class="brand">
+    <div class="logo">NQ</div>
+    <div>
+      <span class="brand-title">NLP QUEST</span>
+      <small id="roundLabel" class="brand-sub">TEAM ARENA</small>
+    </div>
+  </div>
+
+  <div class="top-right">
+    <span id="timer" class="timer hidden">⏱ --:--</span>
+    <span id="teamChip" class="pill hidden"></span>
+    <span id="scoreChip" class="pill mint hidden">0 PTS</span>
+    <button id="muteBtn" class="icon-btn" aria-label="Mute/Unmute">🔊</button>
+  </div>
+</header>
+
+<main id="app">
+  <!-- VIEW 1: JOIN & TEAM REGISTRATION -->
+  <section id="v-join" class="view center">
+    <div class="card join-card">
+      <div class="join-mascot" aria-hidden="true">
+        <span>🎮</span><span>🧩</span><span>🧠</span>
+      </div>
+      <h1>Enter the Arena</h1>
+      <p class="muted">Collaborate with your squad to master NLP concepts through interactive puzzles.</p>
+
+      <form id="joinForm" autocomplete="off">
+        <label class="lbl" for="jName">YOUR NAME</label>
+        <input id="jName" class="field" maxlength="24" placeholder="e.g. Maya" required autofocus>
+
+        <label class="lbl">LEADERBOARD CATEGORY</label>
+        <div class="cat-selector">
+          <label class="cat-radio-opt">
+            <input type="radio" name="jCat" value="girls" checked>
+            <span class="cat-btn girls-btn">🌸 Girls' League</span>
+          </label>
+          <label class="cat-radio-opt">
+            <input type="radio" name="jCat" value="boys">
+            <span class="cat-btn boys-btn">⚡ Boys' League</span>
+          </label>
+        </div>
+
+        <div class="team-join-modes">
+          <div class="mode-toggle">
+            <button type="button" class="mode-btn active" id="btnModeExisting">Join Existing Team</button>
+            <button type="button" class="mode-btn" id="btnModeNew">+ Create New Team</button>
+          </div>
+
+          <!-- Existing team dropdown -->
+          <div id="wrapExistingTeam">
+            <label class="lbl" for="jTeamSelect">SELECT YOUR TEAM</label>
+            <select id="jTeamSelect" class="field" required></select>
+          </div>
+
+          <!-- New team input -->
+          <div id="wrapNewTeam" class="hidden">
+            <label class="lbl" for="jNewTeamName">NEW TEAM NAME</label>
+            <input id="jNewTeamName" class="field" placeholder="e.g. Team Hyperplane" maxlength="28">
+          </div>
+        </div>
+
+        <label class="lbl" for="jRole">YOUR ROLE IN SQUAD</label>
+        <select id="jRole" class="field">
+          <option value="Team Leader">👑 Team Leader (Submits Answers)</option>
+          <option value="Squad Member" selected>🤝 Squad Member (Discusses & Collaborates)</option>
+        </select>
+
+        <button class="btn wide" type="submit" style="margin-top:22px;">Join Team & Enter Arena →</button>
+        <p id="jErr" class="err" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- VIEW 2: LOBBY / WAITING ROOM -->
+  <section id="v-wait" class="view center hidden">
+    <div class="card wait-card">
+      <div class="team-badge-big" id="wTeam">Team Alpha</div>
+      <div class="team-cat-pill" id="wCat">🌸 GIRLS' LEAGUE</div>
+      <h2 id="wTitle">Squad Ready!</h2>
+      <p class="muted" id="wSub">Waiting for the host to launch Round 1: Picture Connect.</p>
+
+      <div class="squad-box">
+        <span class="squad-label">SQUAD MEMBERS</span>
+        <ul class="members-list" id="wMembers"></ul>
+      </div>
+
+      <div class="score-summary-row" id="wScores"></div>
+      
+      <div class="pulse-dots" aria-hidden="true">
+        <i></i><i></i><i></i>
+      </div>
+
+      <button class="link-btn" id="leaveBtn">Not your squad? Switch team</button>
+    </div>
+  </section>
+
+  <!-- VIEW 3: ROUND 1 — PICTURE CONNECT -->
+  <section id="v-r1" class="view hidden">
+    <div class="game-container">
+      <!-- Round Info Bar -->
+      <div class="q-header">
+        <div class="q-tags">
+          <span class="pill" id="r1Unit">UNIT I · NLP BASICS</span>
+          <span class="pill yellow" id="r1Tag">TEXT PROCESSING</span>
+        </div>
+        <div class="q-counter" id="r1Count">Question 1 / 15</div>
+      </div>
+      <div class="progress-bar-wrap"><i id="r1Bar"></i></div>
+
+      <!-- Main Question Title -->
+      <h2 class="q-headline">What connects them?</h2>
+
+      <!-- 2x2 Image Clues Grid -->
+      <div class="pics-grid" id="r1Pics" role="group" aria-label="Visual clues">
+        <!-- 4 illustrated cards rendered dynamically -->
+      </div>
+
+      <!-- Word Length Dashes Slots -->
+      <div class="answer-slots" id="r1Slots" aria-live="polite"></div>
+
+      <!-- Hint Reveal Display -->
+      <div class="hint-box hidden" id="r1Hint"></div>
+
+      <!-- Attempts Remaining & Potential Points Info -->
+      <div class="attempts-info" id="r1Att"></div>
+
+      <!-- On-Screen Virtual Keyboard -->
+      <div class="virtual-keyboard" id="r1Kbd"></div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn yellow" id="r1HintBtn">💡 Hint <small>(100 → 60 pts)</small></button>
+        <button class="btn ghost" id="r1Skip">Skip</button>
+        <button class="btn" id="r1Submit">Submit Answer ✓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 4: ROUND 2 — HANGMAN -->
+  <section id="v-r2" class="view hidden">
+    <div class="game-container">
+      <!-- Round Info Bar -->
+      <div class="q-header">
+        <div class="q-tags">
+          <span class="pill" id="r2Unit">UNIT I · NLP BASICS</span>
+          <span class="pill gray" id="r2Diff">EASY</span>
+        </div>
+        <div class="q-counter" id="r2Count">Word 1 / 25</div>
+      </div>
+      <div class="progress-bar-wrap"><i id="r2Bar"></i></div>
+
+      <!-- Hangman Mascot & Clue Card -->
+      <div class="hm-arena">
+        <!-- Friendly Illustrated Mascot SVG (6 stages) -->
+        <div class="hm-canvas-wrap">
+          <svg id="hangSvg" viewBox="0 0 240 220" class="hang-svg" role="img" aria-label="Friendly Mascot Scaffolding">
+            <!-- Stage 1: Ground & Foundation Support -->
+            <g class="hm-part hm-p1">
+              <path d="M20 206 H220" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round"/>
+              <path d="M35 206 L55 176 H105 L125 206" fill="#F1F5F9" stroke="#94A3B8" stroke-width="3"/>
+            </g>
+
+            <!-- Stage 2: Vertical Wooden Mast -->
+            <g class="hm-part hm-p2">
+              <rect x="72" y="32" width="16" height="150" rx="3" fill="#B45309" stroke="#78350F" stroke-width="2"/>
+              <path d="M72 160 L50 200 M88 160 L110 200" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+            </g>
+
+            <!-- Stage 3: Horizontal Beam, Cross-brace, and Hanging Lantern -->
+            <g class="hm-part hm-p3">
+              <rect x="64" y="24" width="112" height="14" rx="3" fill="#B45309" stroke="#78350F" stroke-width="2"/>
+              <path d="M74 65 L105 26" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+              <line x1="160" y1="38" x2="160" y2="60" stroke="#475569" stroke-width="2.5"/>
+              <!-- Lantern ring & hook -->
+              <circle cx="160" cy="62" r="4" fill="none" stroke="#F59E0B" stroke-width="2.5"/>
+            </g>
+
+            <!-- Stage 4: Friendly Mascot Head -->
+            <g class="hm-part hm-p4 mascot-head">
+              <!-- Antenna -->
+              <line x1="160" y1="70" x2="160" y2="80" stroke="#5778D4" stroke-width="3"/>
+              <circle cx="160" cy="68" r="4" fill="#F3C969"/>
+              <!-- Head shape -->
+              <rect x="138" y="78" width="44" height="36" rx="12" fill="#FFFFFF" stroke="#5778D4" stroke-width="3"/>
+              <!-- Expressive eyes -->
+              <circle cx="151" cy="94" r="3.5" fill="#242936" class="mascot-eye"/>
+              <circle cx="169" cy="94" r="3.5" fill="#242936" class="mascot-eye"/>
+              <!-- Cheerful smile -->
+              <path d="M152 102 Q160 108 168 102" fill="none" stroke="#242936" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Rosy cheeks -->
+              <circle cx="145" cy="100" r="3" fill="#FDE2E4"/>
+              <circle cx="175" cy="100" r="3" fill="#FDE2E4"/>
+            </g>
+
+            <!-- Stage 5: Mascot Torso, Adventure Vest, and Waving Arms -->
+            <g class="hm-part hm-p5 mascot-body">
+              <rect x="142" y="117" width="36" height="42" rx="8" fill="#5778D4" stroke="#3A58AB" stroke-width="2.5"/>
+              <!-- Soft mint vest panel -->
+              <rect x="150" y="119" width="20" height="38" rx="4" fill="#A8DCCB"/>
+              <!-- Left arm waving -->
+              <path d="M142 126 L122 112 M122 112 L116 104" stroke="#5778D4" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="115" cy="103" r="4" fill="#F3C969"/>
+              <!-- Right arm -->
+              <path d="M178 126 L196 138" stroke="#5778D4" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="197" cy="139" r="4" fill="#F3C969"/>
+            </g>
+
+            <!-- Stage 6: Mascot Legs (Final stage) -->
+            <g class="hm-part hm-p6 mascot-legs">
+              <!-- Left leg -->
+              <rect x="146" y="161" width="10" height="26" rx="4" fill="#242936"/>
+              <rect x="142" y="184" width="16" height="8" rx="3" fill="#475569"/>
+              <!-- Right leg -->
+              <rect x="164" y="161" width="10" height="26" rx="4" fill="#242936"/>
+              <rect x="162" y="184" width="16" height="8" rx="3" fill="#475569"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Clue & Lives Details -->
+        <div class="hm-info-card">
+          <div class="clue-tag">NLP CLUE</div>
+          <p class="clue-text" id="r2Clue"></p>
+          <div class="lives-indicator" id="r2Lives"></div>
+        </div>
+      </div>
+
+      <!-- Hidden Term Letter Slots -->
+      <div class="word-slots-container" id="r2Word" aria-live="polite"></div>
+
+      <!-- Alphabet Virtual Keyboard -->
+      <div class="virtual-keyboard hm-kbd" id="r2Kbd"></div>
+
+      <!-- Actions -->
+      <div class="action-buttons" id="r2Actions">
+        <button class="btn yellow" id="r2HintBtn">💡 Reveal Letter <small>(−20 pts)</small></button>
+        <button class="btn ghost" id="r2Skip">Skip Word</button>
+      </div>
+
+      <div class="action-buttons hidden" id="r2NextWrap">
+        <button class="btn mint" id="r2Next">Next Word →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 5: ROUND FINISHED (Self-paced completion) -->
+  <section id="v-done" class="view center hidden">
+    <div class="card wait-card">
+      <div class="big-emoji">🎉</div>
+      <h2 id="dTitle">Round Complete!</h2>
+      <p class="muted" id="dSub">Great job squad! Waiting for the next stage.</p>
+      <div class="score-summary-row" id="dScores"></div>
+    </div>
+  </section>
+
+  <!-- Paused Overlay -->
+  <div id="paused" class="overlay hidden">
+    <div class="card overlay-card">
+      <div class="big-emoji">⏸️</div>
+      <h2>Match Paused</h2>
+      <p class="muted">The host has temporarily paused the game. Discuss strategies with your squad!</p>
+    </div>
+  </div>
+
+  <!-- Notification Toast & Feedback banner -->
+  <div id="fb" class="feedback-banner hidden" aria-live="assertive"></div>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/play.js"></script>
+</body>
+</html>

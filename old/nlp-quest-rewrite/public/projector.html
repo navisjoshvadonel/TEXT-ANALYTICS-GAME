@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NLP QUEST · Live Projector Arena</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/projector.css">
+</head>
+<body>
+<div class="projector-stage">
+  <!-- Top Header -->
+  <header class="p-header">
+    <div class="p-brand">
+      <div class="logo">NQ</div>
+      <div>
+        <h1 class="arena-title">NLP QUEST</h1>
+        <div class="arena-sub">INTERACTIVE LEARNING ARENA</div>
+      </div>
+    </div>
+
+    <div class="p-round-badge">
+      <div class="r-badge-num" id="roundNum">ROUND 01</div>
+      <div class="r-badge-name" id="roundName">PICTURE CONNECT</div>
+    </div>
+
+    <div class="p-header-right">
+      <div class="p-timer hidden" id="timer">--:--</div>
+      <div class="live-pill" id="livePill"><i class="live-dot"></i> LIVE</div>
+      <button id="fsBtn" class="icon-btn-ghost" title="Toggle Fullscreen (F11)">⛶</button>
+      <button id="muteBtn" class="icon-btn-ghost" title="Mute/Unmute">🔊</button>
+    </div>
+  </header>
+
+  <!-- Main Arena Display -->
+  <main class="p-body">
+    <!-- Dual Leaderboards Section (Live during Rounds) -->
+    <div id="dualBoards" class="dual-container">
+      <!-- Girls' Top 5 -->
+      <section class="card-column girls-col">
+        <div class="col-header">
+          <div class="trophy-badge girls-trophy">🏆</div>
+          <div>
+            <h2 class="col-title">GIRLS' TOP 5</h2>
+            <div class="col-sub">LEADERSHIP BOARD</div>
+          </div>
+        </div>
+        <div class="board-list" id="girlsBoard"></div>
+      </section>
+
+      <!-- Boys' Top 5 -->
+      <section class="card-column boys-col">
+        <div class="col-header">
+          <div class="trophy-badge boys-trophy">🏆</div>
+          <div>
+            <h2 class="col-title">BOYS' TOP 5</h2>
+            <div class="col-sub">LEADERSHIP BOARD</div>
+          </div>
+        </div>
+        <div class="board-list" id="boysBoard"></div>
+      </section>
+    </div>
+
+    <!-- Final Podium View (Shown at the end of Round 2) -->
+    <div id="finalPodium" class="podium-container hidden">
+      <div class="podium-header">
+        <h2>👑 ARENA CHAMPIONS 👑</h2>
+        <p>Congratulations to the top performing teams across all units!</p>
+      </div>
+      <div class="podium-cards" id="podiumCards"></div>
+    </div>
+
+    <!-- Live Event Ticker -->
+    <div class="ticker-wrap">
+      <div class="ticker-label">LATEST ACTION</div>
+      <div class="ticker-feed" id="tickerFeed">Waiting for arena action…</div>
+    </div>
+  </main>
+
+  <!-- Bottom Stats Footer -->
+  <footer class="p-footer">
+    <div class="stat-item">
+      <span class="stat-label">ACTIVE TEAMS</span>
+      <b class="stat-value" id="sTeams">0</b>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <span class="stat-label">QUESTIONS SOLVED</span>
+      <b class="stat-value" id="sSolved">0</b>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-progress">
+      <div class="stat-progress-label">
+        <span class="stat-label">ROUND PROGRESS</span>
+        <span class="stat-val-sm" id="sProgressText">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="sBar"></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Paused Overlay -->
+<div id="pausedBanner" class="paused-banner hidden">
+  <div class="paused-content">
+    <span class="pause-icon">⏸</span>
+    <span>COMPETITION PAUSED BY HOST</span>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/projector.js"></script>
+</body>
+</html>
+

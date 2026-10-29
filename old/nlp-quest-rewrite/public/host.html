@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NLP QUEST · Host Control Panel</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/host.css">
+</head>
+<body>
+<div class="host-stage">
+  <!-- Top Navigation & Controls Header -->
+  <header class="h-header">
+    <div class="h-brand">
+      <div class="logo">NQ</div>
+      <div>
+        <h1 class="host-title">NLP QUEST <span class="badge-role">HOST CONTROL PANEL</span></h1>
+        <div class="host-sub">ADMINISTRATION & ARENA MANAGEMENT</div>
+      </div>
+    </div>
+
+    <div class="h-actions">
+      <a href="/projector.html" target="_blank" class="btn yellow sm" title="Launch Dedicated Projector Screen">
+        🖥️ Open Projector Screen ↗
+      </a>
+      <button id="muteBtn" class="icon-btn-ghost" title="Mute/Unmute">🔊</button>
+    </div>
+  </header>
+
+  <!-- Login Gate -->
+  <div id="loginGate" class="login-container">
+    <div class="card login-card">
+      <div class="login-icon">🔒</div>
+      <h2>Host Authentication</h2>
+      <p class="muted">Enter the 4-digit host PIN to access arena controls.</p>
+      <form id="pinForm" autocomplete="off">
+        <input id="pinInput" class="field" type="password" inputmode="numeric" placeholder="Enter PIN (Default: 2468)" required autofocus>
+        <button type="submit" class="btn wide">Unlock Controls →</button>
+        <p id="pinErr" class="err" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Authenticated Host Dashboard -->
+  <main id="hostDashboard" class="host-dashboard hidden">
+    <!-- Match Command Bar -->
+    <div class="card command-bar">
+      <div class="status-block">
+        <span class="status-label">CURRENT PHASE</span>
+        <div class="phase-display" id="phaseDisplay">LOBBY</div>
+      </div>
+
+      <div class="status-block">
+        <span class="status-label">ROUND TIMER</span>
+        <div class="timer-display" id="timerDisplay">--:--</div>
+      </div>
+
+      <div class="cmd-buttons">
+        <button id="btnStart1" class="btn mint">▶ Start Round 1 (Picture Connect)</button>
+        <button id="btnStart2" class="btn mint hidden">▶ Start Round 2 (Hangman)</button>
+        <button id="btnPause" class="btn yellow">⏸ Pause</button>
+        <button id="btnResume" class="btn yellow hidden">▶ Resume</button>
+        <button id="btnAdd1" class="btn ghost sm">+1 Min</button>
+        <button id="btnAdd3" class="btn ghost sm">+3 Min</button>
+        <button id="btnEnd" class="btn red sm">■ End Round</button>
+      </div>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="tabTeams">👥 Teams & Leaderboards (<span id="tabTeamCount">0</span>)</button>
+      <button class="tab-btn" data-tab="tabAddTeam">➕ Add / Seed Teams</button>
+      <button class="tab-btn" data-tab="tabQuestions">📚 Question Banks</button>
+      <button class="tab-btn" data-tab="tabSettings">⚙️ Match Settings & Reset</button>
+    </div>
+
+    <!-- TAB 1: Teams Monitor & Points Management -->
+    <section id="tabTeams" class="tab-pane active">
+      <div class="card">
+        <div class="card-header-row">
+          <div>
+            <h3>Live Arena Teams</h3>
+            <p class="muted">Click on a category pill to switch a team between Girls and Boys leagues.</p>
+          </div>
+          <div class="header-right-tools">
+            <input id="teamFilter" class="field sm" placeholder="Filter teams…" style="width:200px;">
+            <a id="btnExportCsv" class="btn ghost sm" href="#">⬇ Export CSV</a>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="teams-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team Name</th>
+                <th>Category</th>
+                <th>Players Online</th>
+                <th>R1 Solved</th>
+                <th>R2 Solved</th>
+                <th>R1 Pts</th>
+                <th>R2 Pts</th>
+                <th>Total</th>
+                <th>Quick Adjust</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="teamsTbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Add or Seed Teams -->
+    <section id="tabAddTeam" class="tab-pane hidden">
+      <div class="grid-2col">
+        <!-- Manual Add Team -->
+        <div class="card">
+          <h3>Create a New Team</h3>
+          <p class="muted">Add a team directly to the competition.</p>
+          <form id="addTeamForm">
+            <label class="lbl" for="newTeamName">TEAM NAME</label>
+            <input id="newTeamName" class="field" placeholder="e.g. Team Quantum" required>
+
+            <label class="lbl">LEADERBOARD CATEGORY</label>
+            <div class="cat-picker">
+              <label class="cat-opt">
+                <input type="radio" name="newTeamCat" value="girls" checked>
+                <span>🌸 Girls' League</span>
+              </label>
+              <label class="cat-opt">
+                <input type="radio" name="newTeamCat" value="boys">
+                <span>⚡ Boys' League</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn wide" style="margin-top:20px;">Add Team to Arena</button>
+          </form>
+        </div>
+
+        <!-- Pre-seed Quick Start -->
+        <div class="card">
+          <h3>Quick Seed Teams</h3>
+          <p class="muted">Quickly populate the arena with the standard 10 teams from the tournament syllabus:</p>
+          <div class="seed-preview">
+            <div>
+              <b>🌸 Girls' League (5 teams):</b>
+              <ul>
+                <li>Team Alpha</li><li>Team Luna</li><li>Team Iris</li><li>Team Bloom</li><li>Team Echo</li>
+              </ul>
+            </div>
+            <div>
+              <b>⚡ Boys' League (5 teams):</b>
+              <ul>
+                <li>Team Nova</li><li>Team Orbit</li><li>Team Pixel</li><li>Team Spark</li><li>Team Vertex</li>
+              </ul>
+            </div>
+          </div>
+          <button id="btnSeedPresets" class="btn ghost wide">🌱 Populate 10 Starter Teams</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Question Banks Browser -->
+    <section id="tabQuestions" class="tab-pane hidden">
+      <div class="card">
+        <div class="card-header-row">
+          <h3>Syllabus Question Bank Overview</h3>
+          <span class="pill mint">40 Total Questions (15 Connect + 25 Hangman)</span>
+        </div>
+        
+        <h4 style="margin: 18px 0 10px;">Round 1: Picture Connect (15 Questions · 3 Per Unit)</h4>
+        <div class="table-wrap">
+          <table class="q-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Unit</th><th>Target Term</th><th>Picture Clue Concept</th><th>Hint</th><th>Diff</th>
+              </tr>
+            </thead>
+            <tbody id="r1QTableBody"></tbody>
+          </table>
+        </div>
+
+        <h4 style="margin: 28px 0 10px;">Round 2: Hangman (25 Questions · 5 Per Unit, Non-overlapping)</h4>
+        <div class="table-wrap">
+          <table class="q-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Unit</th><th>Target Term</th><th>Definition / Clue</th><th>Diff</th>
+              </tr>
+            </thead>
+            <tbody id="r2QTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Match Settings & Session Reset -->
+    <section id="tabSettings" class="tab-pane hidden">
+      <div class="card">
+        <h3>Round Durations & Timing</h3>
+        <p class="muted">Default timings are calibrated for a standard classroom lecture period.</p>
+        <div class="settings-form">
+          <label class="lbl">ROUND 1: PICTURE CONNECT DURATION (MINUTES)</label>
+          <input id="cfgR1Min" class="field sm" type="number" min="1" max="60" value="10">
+
+          <label class="lbl">ROUND 2: HANGMAN DURATION (MINUTES)</label>
+          <input id="cfgR2Min" class="field sm" type="number" min="1" max="60" value="15">
+        </div>
+
+        <h3 style="margin-top:32px; color:var(--coral-dark);">Session Reset & Clearance</h3>
+        <p class="muted">Reset options for running a new tournament.</p>
+        <div class="reset-actions">
+          <button id="btnResetKeep" class="btn yellow">🔄 New Match (Keep Registered Teams)</button>
+          <button id="btnResetAll" class="btn red">⚠️ Wipe Everything & Reset Arena</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Modal for Custom Points Adjustment -->
+<dialog id="adjustModal" class="host-modal">
+  <form method="dialog" id="adjustForm">
+    <h3>Adjust Team Points</h3>
+    <p id="adjustTeamName" class="muted">Team Alpha</p>
+    <label class="lbl">POINT DELTA (Positive or Negative)</label>
+    <input id="adjustDelta" class="field" type="number" step="10" placeholder="+20 or -20" required>
+    <label class="lbl">REASON (Shown in live ticker)</label>
+    <input id="adjustReason" class="field" placeholder="e.g. Bonus question / Correction">
+    <div class="modal-buttons">
+      <button type="button" class="btn ghost" id="adjustCancel">Cancel</button>
+      <button type="submit" class="btn mint">Apply Points</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/host.js"></script>
+</body>
+</html>

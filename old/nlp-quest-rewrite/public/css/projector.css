@@ -1,0 +1,638 @@
+/* NLP QUEST · Main Projector Stylesheet */
+/* Optimized for classroom 1080p/4K projectors with clean Soft Arcade aesthetic */
+
+:root {
+  --bg-projector: #F8F7F4;
+  --card-bg: #FFFFFF;
+  --ink: #242936;
+  --muted: #6B7280;
+  --border-line: #E5E7EB;
+  --blue: #5778D4;
+  --blue-dark: #3A58AB;
+  --mint: #A8DCCB;
+  --mint-dark: #2F8569;
+  --yellow: #F3C969;
+  --yellow-dark: #C79727;
+  --coral: #E78474;
+  --coral-dark: #C45746;
+  --row-h: 70px;
+  --row-gap: 12px;
+}
+
+body {
+  background: var(--bg-projector);
+  color: var(--ink);
+  overflow: hidden;
+  margin: 0;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+
+.projector-stage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 24px 36px 20px;
+  box-sizing: border-box;
+  max-width: 1720px;
+  margin: 0 auto;
+}
+
+/* Header */
+.p-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border-line);
+  flex-shrink: 0;
+}
+
+.p-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.p-brand .logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--blue);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 12px rgba(87, 120, 212, 0.25);
+}
+
+.arena-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.arena-sub {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.p-round-badge {
+  text-align: center;
+  background: #FFF;
+  border: 2px solid var(--border-line);
+  padding: 8px 32px;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(36, 41, 54, 0.04);
+}
+
+.r-badge-num {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--blue);
+}
+
+.r-badge-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  margin-top: 2px;
+}
+
+.p-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.p-timer {
+  font-family: 'Nunito', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  background: #FFF;
+  border: 2px solid var(--border-line);
+  padding: 8px 18px;
+  border-radius: 14px;
+  color: var(--ink);
+  min-width: 100px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 2px 8px rgba(36, 41, 54, 0.04);
+}
+
+.p-timer.low {
+  color: var(--coral-dark);
+  border-color: var(--coral);
+  background: #FEF2F0;
+  animation: timerPulse 1s infinite alternate;
+}
+
+@keyframes timerPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #FEECEB;
+  color: var(--coral-dark);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 8px var(--coral);
+  animation: pulse 1.5s infinite;
+}
+
+.icon-btn-ghost {
+  background: #FFF;
+  border: 1.5px solid var(--border-line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.icon-btn-ghost:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+}
+
+/* Main Body & Dual Columns */
+.p-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 16px;
+  min-height: 0;
+  gap: 16px;
+}
+
+.dual-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  min-height: 0;
+}
+
+.card-column {
+  background: var(--card-bg);
+  border-radius: 22px;
+  border: 2px solid rgba(36, 41, 54, 0.06);
+  box-shadow: 0 8px 30px rgba(36, 41, 54, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 28px;
+  min-height: 0;
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--border-line);
+}
+
+.trophy-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+
+.girls-trophy {
+  background: #FDF2F4;
+  border: 1.5px solid #FBCFE8;
+}
+
+.boys-trophy {
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+}
+
+.col-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.girls-col .col-title {
+  color: #B91C1C;
+}
+
+.boys-col .col-title {
+  color: var(--blue-dark);
+}
+
+.col-sub {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Board Row Animations: Absolute sliding with 400ms gentle easing */
+.board-list {
+  position: relative;
+  flex: 1;
+  min-height: 380px;
+}
+
+.team-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--row-h);
+  background: #FAF9F6;
+  border: 1.5px solid var(--border-line);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  box-sizing: border-box;
+  transition: top 450ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 250ms ease, box-shadow 250ms ease;
+}
+
+.team-row.rank-1 {
+  background: #FFFDF5;
+  border-color: #FDE68A;
+  box-shadow: 0 4px 14px rgba(243, 201, 105, 0.18);
+}
+
+.team-row.rank-2 {
+  background: #F9FAFB;
+  border-color: #E5E7EB;
+}
+
+.team-row.rank-3 {
+  background: #FFF8F6;
+  border-color: #FECDD3;
+}
+
+/* Subtle highlight when a team earns points */
+.team-row.just-scored {
+  background: #EBF7F2 !important;
+  border-color: var(--mint) !important;
+  box-shadow: 0 4px 18px rgba(168, 220, 203, 0.4) !important;
+}
+
+.rk-badge {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #E5E7EB;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.rank-1 .rk-badge {
+  background: var(--yellow);
+  color: #5F4208;
+}
+
+.rank-2 .rk-badge {
+  background: #E2E8F0;
+  color: #334155;
+}
+
+.rank-3 .rk-badge {
+  background: #FED7AA;
+  color: #7C2D12;
+}
+
+.tm-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.tm-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+
+.pts-gain-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  background: #DEF7EC;
+  color: var(--mint-dark);
+  padding: 3px 8px;
+  border-radius: 999px;
+  animation: popGain 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes popGain {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.tm-solved-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: #FFF;
+  border: 1px solid var(--border-line);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.tm-score {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--blue-dark);
+  min-width: 75px;
+  text-align: right;
+  letter-spacing: 0.5px;
+}
+
+/* Empty placeholder */
+.board-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
+  gap: 12px;
+}
+
+/* Ticker */
+.ticker-wrap {
+  display: flex;
+  align-items: center;
+  background: #FFF;
+  border: 1.5px solid var(--border-line);
+  border-radius: 14px;
+  padding: 10px 20px;
+  gap: 18px;
+  box-shadow: 0 2px 10px rgba(36, 41, 54, 0.03);
+  flex-shrink: 0;
+}
+
+.ticker-label {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  background: #EFF6FF;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.ticker-feed {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Footer Stats */
+.p-footer {
+  display: flex;
+  align-items: center;
+  background: #FFF;
+  border: 2px solid var(--border-line);
+  border-radius: 18px;
+  padding: 16px 28px;
+  gap: 32px;
+  box-shadow: 0 4px 18px rgba(36, 41, 54, 0.04);
+  flex-shrink: 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.stat-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.stat-sep {
+  width: 2px;
+  height: 38px;
+  background: var(--border-line);
+}
+
+.stat-progress {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-val-sm {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--blue-dark);
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 14px;
+  background: #F3F4F6;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border-line);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--mint), var(--blue));
+  border-radius: 999px;
+  transition: width 400ms ease;
+}
+
+/* Final Podium */
+.podium-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.podium-header {
+  text-align: center;
+}
+
+.podium-header h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.podium-header p {
+  font-size: 18px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.podium-cards {
+  display: flex;
+  gap: 32px;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.podium-card {
+  background: #FFF;
+  border-radius: 20px;
+  border: 2px solid var(--border-line);
+  box-shadow: 0 10px 30px rgba(36, 41, 54, 0.08);
+  padding: 30px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.3s ease;
+}
+
+.podium-card.winner {
+  border-color: var(--yellow);
+  background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 100%);
+  transform: scale(1.08);
+}
+
+.podium-icon {
+  font-size: 48px;
+}
+
+.podium-category {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.podium-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: var(--ink);
+}
+
+.podium-score {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  color: var(--blue-dark);
+}
+
+/* Paused Banner */
+.paused-banner {
+  position: fixed;
+  inset: 0;
+  background: rgba(36, 41, 54, 0.65);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+
+.paused-content {
+  background: #FFF;
+  padding: 24px 48px;
+  border-radius: 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-row {
+    transition: none !important;
+  }
+}
+

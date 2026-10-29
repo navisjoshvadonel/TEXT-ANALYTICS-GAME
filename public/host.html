@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Analysis The Texts · Arena</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/host.css">
+</head>
+<body class="game-bg">
+<div class="stage">
+  <header class="hdr">
+    <div class="brand big"><div class="logo">AT</div><div>ANALYSIS THE TEXTS<small>INTERACTIVE LEARNING ARENA</small></div></div>
+    <div class="round-box">
+      <div class="round-num" id="roundNum">LOBBY</div>
+      <div class="round-name" id="roundName">Players are joining</div>
+    </div>
+    <div class="hdr-right">
+      <div class="timer big-timer hidden" id="timer"></div>
+      <span class="pin-chip hidden" id="pinChip" title="Late joiners use this PIN">PIN <b id="pinChipVal"></b></span>
+      <span class="pill live" id="live"><i class="live-dot"></i> LIVE</span>
+    </div>
+  </header>
+
+  <main id="body">
+    <!-- LOBBY: who has joined -->
+    <section id="p-lobby" class="phase">
+      <div class="card join-card">
+        <p class="eyebrow">1 · OPEN IN YOUR BROWSER</p>
+        <div class="url" id="url">…</div>
+        <div class="url-alt" id="urlAlt"></div>
+        <p class="eyebrow">2 · ENTER GAME PIN</p>
+        <div class="game-pin" id="gamePin" aria-label="Game PIN">······</div>
+        <p class="muted">Then enter your name, pick your <b>department arena</b> and <b>section</b>.</p>
+        <div class="join-count"><b id="joinCount">0</b><span>PLAYERS JOINED</span></div>
+      </div>
+      <div class="lobby-arenas" id="lobbyArenas"></div>
+      <p class="empty" id="lobbyEmpty">Waiting for the first player… 👀</p>
+    </section>
+
+    <!-- ROUND 1: arena battle -->
+    <section id="p-r1" class="phase hidden">
+      <div class="r1-main">
+        <div class="banner hidden" id="r1Banner">🏁 ROUND 1 COMPLETE · Scores carry into Round 2 — Hangman, everyone vs everyone</div>
+        <div class="card race-card">
+          <div class="card-h"><h3>⚔ Arena battle</h3><span class="pill gray">AVG POINTS PER PLAYER</span></div>
+          <div class="race" id="race1"></div>
+        </div>
+        <div id="arenaGrid" class="arena-grid"></div>
+      </div>
+      <aside class="side">
+        <div class="card side-card">
+          <div class="card-h"><h3>⭐ Round 1 top 5</h3></div>
+          <div class="board compact" id="top5"></div>
+        </div>
+        <div class="card side-card grow">
+          <div class="card-h"><h3>Live feed</h3></div>
+          <ul class="feed" id="feed1"></ul>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ROUND 2: everyone vs everyone -->
+    <section id="p-r2" class="phase hidden">
+      <div class="card main-board">
+        <div class="card-h"><h3>🏆 Overall leaderboard · Everyone vs everyone</h3><span class="pill yellow">ROUND 1 + ROUND 2</span></div>
+        <div class="board-head"><span>#</span><span>PLAYER</span><span>ARENA</span><span>R1</span><span>R2</span><span>TOTAL</span></div>
+        <div class="board" id="overall"></div>
+      </div>
+      <aside class="side">
+        <div class="card side-card">
+          <div class="card-h"><h3>⚔ Arenas</h3><span class="pill gray">AVG</span></div>
+          <div class="race slim" id="race2"></div>
+        </div>
+        <div class="card side-card grow">
+          <div class="card-h"><h3>Live feed</h3></div>
+          <ul class="feed" id="feed2"></ul>
+        </div>
+      </aside>
+    </section>
+
+    <!-- FINAL: top 5 podium + department leaders -->
+    <section id="p-final" class="phase hidden">
+      <div class="final-top">
+        <p class="eyebrow center">🏆 TOP 5 PLAYERS · ROUND 1 + ROUND 2</p>
+        <div class="podium" id="podium"></div>
+      </div>
+      <div class="final-depts">
+        <p class="eyebrow center">👑 DEPARTMENT LEADERS</p>
+        <div class="dept-leaders" id="deptLeaders"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="stats">
+    <div><span>PLAYERS</span><b id="sPlayers">0</b></div>
+    <div><span>ONLINE</span><b id="sOnline">0</b></div>
+    <div><span>ARENAS</span><b id="sArenas">0</b></div>
+    <div><span>QUESTIONS SOLVED</span><b id="sSolved">0</b></div>
+    <div class="grow"><span>ROUND PROGRESS</span><div class="bar"><i id="sBar"></i></div></div>
+  </footer>
+</div>
+
+<div id="pausedBanner" class="paused hidden">⏸ GAME PAUSED</div>
+
+<button id="dockToggle" class="dock-toggle" title="Host controls (H)" aria-label="Host controls">⚙</button>
+<div id="dock" class="dock hidden">
+  <div id="login" class="login">
+    <b>Host PIN</b>
+    <input id="pin" class="field" type="password" inputmode="numeric" placeholder="PIN">
+    <button class="btn" id="pinBtn">Unlock</button>
+  </div>
+  <div id="controls" class="hidden">
+    <div class="dock-row">
+      <div class="dock-state" id="dockState"></div>
+      <button class="btn mint" id="cStart1">▶ Start Round 1</button>
+      <button class="btn mint" id="cStart2">▶ Start Round 2</button>
+      <button class="btn yellow" id="cPause">⏸ Pause</button>
+      <button class="btn yellow" id="cResume">▶ Resume</button>
+      <button class="btn ghost" id="cAdd">+1 min</button>
+      <button class="btn red" id="cEnd">■ End round</button>
+      <span class="sep"></span>
+      <button class="btn ghost" id="cPlayers">Players</button>
+      <button class="btn ghost" id="cSettings">Settings</button>
+      <button class="btn ghost" id="cNewPin">🔄 New PIN</button>
+      <button class="btn ghost" id="cExport">⬇ CSV</button>
+      <button class="icon-btn" id="mute">🔊</button>
+      <button class="btn ghost sm" id="cHide">Hide ✕</button>
+    </div>
+    <div id="panelPlayers" class="panel hidden">
+      <input id="pSearch" class="field search" placeholder="Search name or department…">
+      <table class="tt"><thead><tr><th>Player</th><th>Arena</th><th>Status</th><th>R1</th><th>R2</th><th>Total</th><th>Adjust</th><th></th></tr></thead><tbody id="playerRows"></tbody></table>
+    </div>
+    <div id="panelSettings" class="panel hidden">
+      <div class="set-grid">
+        <label>Departments / arenas (comma separated)<input id="sDepts" class="field"></label>
+        <label>Sections (comma separated, blank = none)<input id="sSecs" class="field"></label>
+        <label>Round 1 minutes<input id="sR1" class="field" type="number" min="1" max="60"></label>
+        <label>Round 2 minutes<input id="sR2" class="field" type="number" min="1" max="60"></label>
+      </div>
+      <div class="dock-row">
+        <button class="btn" id="sSave">Save settings</button>
+        <span class="sep"></span>
+        <button class="btn red" id="rKeep">New match (keep players)</button>
+        <button class="btn red" id="rAll">Wipe everything</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/common.js"></script>
+<script src="js/host.js"></script>
+</body>
+</html>
