@@ -251,7 +251,7 @@ function auth(pin, silent) {
 }
 $('#pinBtn').onclick = () => auth($('#pin').value);
 $('#pin').onkeydown = e => e.key === 'Enter' && auth($('#pin').value);
-const toggleDock = () => { $('#dock').classList.toggle('hidden'); if (!authed) $('#pin').focus(); };
+const toggleDock = () => { if (currentMode === 'solo') return; $('#dock').classList.toggle('hidden'); if (!authed) $('#pin').focus(); };
 $('#dockToggle').onclick = toggleDock;
 $('#cHide').onclick = toggleDock;
 const toggleFullscreen = () => {
@@ -776,6 +776,7 @@ function showSoloFinal() {
 
 // ---------------- MODE SWITCHING & LISTENERS ----------------
 function setMode(mode) {
+  document.body.classList.toggle('mode-solo', mode === 'solo');
   currentMode = mode;
   $('#btnModeMulti').classList.toggle('active', mode === 'multi');
   $('#btnModeSolo').classList.toggle('active', mode === 'solo');
