@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/full-match.test.js"
+    "test": "node tests/solo-mode.test.js && node tests/full-match.test.js"
   },
   "dependencies": {
     "express": "^4.22.3",

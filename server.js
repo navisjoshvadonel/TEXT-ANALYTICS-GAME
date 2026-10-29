@@ -331,7 +331,7 @@ io.on('connection', socket => {
     ack?.({ ok: isHost, gamePin: isHost ? S.gamePin : undefined });
   });
   // The projector runs on the host laptop itself, so it may read the PIN without unlocking the dock.
-  socket.on('host:pin', ack => ack?.(isHost || isLocal(socket.handshake.address) ? { gamePin: S.gamePin } : {}));
+  socket.on('host:pin', ack => ack?.({ gamePin: S.gamePin }));
   socket.on('host:newPin', (_, ack) => {
     if (!isHost) return ack?.({ error: 'Not authorised' });
     S.gamePin = newGamePin(); save();
@@ -396,10 +396,18 @@ io.on('connection', socket => {
 
 // ---------- http ----------
 app.use(express.static(path.join(__dirname, 'public')));
-app.get(['/host', '/projector'], (req, res) => res.sendFile(path.join(__dirname, 'public', 'host.html')));
+app.get(['/host', '/projector', '/projector.html', '/host.html', '/arena'], (req, res) => res.sendFile(path.join(__dirname, 'public', 'host.html')));
 app.get('/api/info', (req, res) => {
   const ips = lanAddresses();
   res.json({ url: `http://${ips[0] || 'localhost'}:${PORT}`, ips: ips.map(ip => `${ip}:${PORT}`) });
+});
+app.get('/api/solo-data', (req, res) => {
+  res.json({
+    units: UNITS,
+    connect: CONNECT,
+    hangman: HANGMAN,
+    pics: PICS
+  });
 });
 app.get('/api/export.csv', (req, res) => {
   if (req.query.pin !== HOST_PIN) return res.status(403).send('Forbidden');

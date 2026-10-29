@@ -149,7 +149,7 @@ const until = async (fn, ms = 3000) => { const t = Date.now(); while (Date.now()
     while (s.me.r1 && !s.me.r1.done && guard++ < 60) {
       const id = s.me.r1.q.id, seq = s.me.r1.seq;
       s.emit('r1:submit', (i + guard) % 3 ? ans(id) : 'Z'.repeat(L(ans(id)).length));
-      await until(() => s.me.r1.seq !== seq);
+      await until(() => !s.me?.r1 || s.me.r1.done || s.me.r1.seq !== seq);
     }
   }));
   ok(players.every(s => s.me.r1.done), 'all players can finish Round 1');

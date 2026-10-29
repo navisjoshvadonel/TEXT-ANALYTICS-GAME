@@ -15,9 +15,14 @@
       <div class="round-name" id="roundName">Players are joining</div>
     </div>
     <div class="hdr-right">
+      <div class="mode-switch" id="modeSwitch" role="tablist">
+        <button type="button" class="mode-btn active" id="btnModeMulti" role="tab" aria-selected="true"><span class="mi">👥</span> Multiplayer</button>
+        <button type="button" class="mode-btn" id="btnModeSolo" role="tab" aria-selected="false"><span class="mi">🎮</span> Single Player</button>
+      </div>
+      
       <div class="timer big-timer hidden" id="timer"></div>
       <span class="pin-chip hidden" id="pinChip" title="Late joiners use this PIN">PIN <b id="pinChipVal"></b></span>
-      <span class="pill live" id="live"><i class="live-dot"></i> LIVE</span>
+      <span class="pill live" id="live"><i class="live-dot"></i> LIVE</span> <button id="fsBtn" class="icon-btn" title="Fullscreen (F)" aria-label="Toggle Fullscreen">⛶</button>
     </div>
   </header>
 
@@ -32,6 +37,10 @@
         <div class="game-pin" id="gamePin" aria-label="Game PIN">······</div>
         <p class="muted">Then enter your name, pick your <b>department arena</b> and <b>section</b>.</p>
         <div class="join-count"><b id="joinCount">0</b><span>PLAYERS JOINED</span></div>
+        <div class="lobby-solo-banner">
+          <span>Solo host practice?</span>
+          <button type="button" class="btn ghost sm" id="btnSoloFromLobby">🎮 Play Single Player (Untimed)</button>
+        </div>
       </div>
       <div class="lobby-arenas" id="lobbyArenas"></div>
       <p class="empty" id="lobbyEmpty">Waiting for the first player… 👀</p>
@@ -87,6 +96,109 @@
       <div class="final-depts">
         <p class="eyebrow center">👑 DEPARTMENT LEADERS</p>
         <div class="dept-leaders" id="deptLeaders"></div>
+      </div>
+    </section>
+    <!-- SINGLE PLAYER (SOLO HOST) -->
+    <section id="p-solo" class="phase hidden">
+      <div class="solo-bar">
+        <div class="solo-bar-left">
+          <span class="pill" id="soloUnit">UNIT I · NLP BASICS</span>
+          <span class="pill gray" id="soloTag">TEXT PROCESSING</span>
+          <span class="solo-badge" id="soloCount">1 / 15</span>
+        </div>
+        <div class="solo-bar-mid">
+          <span class="pill mint" id="soloUntimed"><span class="icon">⏱</span> NO TIME LIMIT</span>
+        </div>
+        <div class="solo-bar-right">
+          <div class="hud-chip">★ <b id="soloScore">0</b></div>
+          <div class="hud-chip streak hidden" id="soloStreakChip">🔥 <b id="soloStreak">0</b></div>
+          <button type="button" class="btn ghost sm" id="soloResetBtn" title="Restart Solo Game">🔄 Restart</button>
+        </div>
+      </div>
+
+      <div class="stage-map solo-map" id="soloMap"></div>
+
+      <div id="soloFb" class="feedback hidden"></div>
+
+      <!-- SOLO ROUND 1: Picture Connect -->
+      <div id="soloR1" class="solo-stage">
+        <div class="solo-pics" id="soloPics"></div>
+        <div class="slots" id="soloR1Slots" aria-live="polite"></div>
+        <p class="hint-text hidden" id="soloR1Hint"></p>
+        <div class="tries" id="soloR1Att"></div>
+        <p class="solo-tip">⌨️ Type directly on your keyboard or tap the letters below · <kbd>Enter</kbd> submit · <kbd>Esc</kbd> clear</p>
+        <div class="kbd" id="soloR1Kbd"></div>
+        <div class="actions">
+          <button type="button" class="btn yellow" id="soloR1HintBtn">💡 Hint <small>(100→60)</small></button>
+          <button type="button" class="btn ghost" id="soloR1Skip">Skip ⏭</button>
+          <button type="button" class="btn mint btn-go" id="soloR1Submit">SUBMIT ✓</button>
+        </div>
+      </div>
+
+      <!-- SOLO ROUND 1 COMPLETE -->
+      <div id="soloR1Done" class="solo-stage center hidden">
+        <div class="card result solo-result-card">
+          <div class="res-medal">🧩</div>
+          <h2>Round 1 Complete!</h2>
+          <p class="muted">Picture Connect finished. Scores carry into Round 2 — Hangman!</p>
+          <div class="score-row">
+            <div><span>ROUND 1 SCORE</span><b id="soloR1ScoreVal">0</b></div>
+            <div><span>SOLVED</span><b id="soloR1SolvedVal">0 / 15</b></div>
+            <div><span>ACCURACY</span><b id="soloR1AccVal">0%</b></div>
+            <div><span>BEST STREAK</span><b id="soloR1StreakVal">🔥 0</b></div>
+          </div>
+          <div class="actions" style="margin-top:24px">
+            <button type="button" class="btn mint btn-xl" id="soloStartR2Btn">▶ Proceed to Round 2: Hangman (25 Words) →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOLO ROUND 2: Hangman -->
+      <div id="soloR2" class="solo-stage hidden">
+        <div class="hm-wrap">
+          <svg id="soloHang" viewBox="0 0 220 200" class="hang" role="img" aria-label="Hangman character">
+            <path class="hp p1" pathLength="1" d="M20 186 H200"/>
+            <path class="hp p2" pathLength="1" d="M60 186 V24"/>
+            <path class="hp p3" pathLength="1" d="M52 24 H150 M60 54 L90 24 M150 24 V48"/>
+            <g class="hpart p4"><circle cx="150" cy="68" r="20" class="head"/><circle cx="143" cy="66" r="2.6" class="eye"/><circle cx="157" cy="66" r="2.6" class="eye"/><path class="mouth" d="M143 76 Q150 81 157 76"/><circle cx="138" cy="73" r="3" class="blush"/><circle cx="162" cy="73" r="3" class="blush"/></g>
+            <path class="hp p5" pathLength="1" d="M150 88 V134 M150 100 L128 120 M150 100 L172 120"/>
+            <path class="hp p6" pathLength="1" d="M150 134 L134 164 M150 134 L166 164"/>
+          </svg>
+          <div class="hm-side">
+            <p class="clue-label">DEFINITION / CLUE</p>
+            <p class="clue" id="soloR2Clue">...</p>
+            <div class="lives" id="soloR2Lives" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="word" id="soloR2Word" aria-live="polite"></div>
+        <p class="solo-tip">⌨️ Type any letter to guess · No time limit</p>
+        <div class="kbd" id="soloR2Kbd"></div>
+        <div class="actions" id="soloR2Actions">
+          <button type="button" class="btn yellow" id="soloR2HintBtn">💡 Reveal a letter <small>(−20)</small></button>
+          <button type="button" class="btn ghost" id="soloR2Skip">Skip ⏭</button>
+        </div>
+        <div class="actions hidden" id="soloR2NextWrap">
+          <button type="button" class="btn mint btn-go" id="soloR2Next">NEXT WORD →</button>
+        </div>
+      </div>
+
+      <!-- SOLO FINAL RESULTS -->
+      <div id="soloFinal" class="solo-stage center hidden">
+        <div class="card result solo-result-card">
+          <div class="res-medal">🏆</div>
+          <h2>NLP Quest Completed!</h2>
+          <p class="muted">You finished all units across Picture Connect and Hangman!</p>
+          <div class="score-row">
+            <div><span>TOTAL SCORE</span><b id="soloFinTotal">0</b></div>
+            <div><span>ROUND 1</span><b id="soloFinR1">0</b></div>
+            <div><span>ROUND 2</span><b id="soloFinR2">0</b></div>
+            <div><span>BEST STREAK</span><b id="soloFinStreak">🔥 0</b></div>
+          </div>
+          <div class="actions" style="margin-top:24px">
+            <button type="button" class="btn ghost btn-xl" id="soloPlayAgainBtn">🔄 Play Solo Again</button>
+            <button type="button" class="btn mint btn-xl" id="soloBackToMultiBtn">👥 Back to Multiplayer Arena</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
